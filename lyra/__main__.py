@@ -13,6 +13,7 @@ from .quantum import quantum_simulation
 from .models import simulate_collapse
 from .network import AINodeServer
 from .wisdom import WisdomDatabase
+from .api import create_app
 
 # Configure logging
 logging.basicConfig(
@@ -86,6 +87,13 @@ def run_server(args: argparse.Namespace) -> None:
         server.stop()
 
 
+def run_api(args: argparse.Namespace) -> None:
+    """Start the Flask API server."""
+    app = create_app()
+    logger.info(f"Starting LYRA AI Flask API on {args.host}:{args.port}")
+    app.run(host=args.host, port=args.port, debug=args.debug)
+
+
 def main() -> None:
     """Parse arguments and execute the appropriate command."""
     parser = argparse.ArgumentParser(
@@ -100,6 +108,7 @@ Examples:
   python -m lyra --collapse --alpha-G 1.0
   python -m lyra --wisdom --query "life"
   python -m lyra --server --port 9999
+  python -m lyra --api --port 5000 --debug
         """
     )
 
@@ -166,6 +175,29 @@ Examples:
         help="Port to bind the server to (default: 9999)"
     )
 
+    # API command
+    api_parser = subparsers.add_parser(
+        "api",
+        help="Start the Flask API server"
+    )
+    api_parser.add_argument(
+        "--host",
+        type=str,
+        default="localhost",
+        help="Host address to bind the API to (default: localhost)"
+    )
+    api_parser.add_argument(
+        "--port",
+        type=int,
+        default=5000,
+        help="Port to bind the API to (default: 5000)"
+    )
+    api_parser.add_argument(
+        "--debug",
+        action="store_true",
+        help="Enable Flask debug mode (default: False)"
+    )
+
     # Parse arguments
     args = parser.parse_args()
 
@@ -180,6 +212,10 @@ Examples:
         run_collapse_simulation(args)
     elif args.command == "wisdom":
         run_wisdom_search(args)
+    elif args.command == "server":
+        run_server(args)
+    elif args.command == "api":
+        run_api(args)
     elif args.command == "server":
         run_server(args)
     else:
