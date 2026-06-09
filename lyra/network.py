@@ -6,7 +6,7 @@ import socket
 import threading
 import json
 import logging
-from typing import Callable, Any
+from typing import Callable, Any, Optional
 
 # Configure logging
 logging.basicConfig(
@@ -37,7 +37,7 @@ class AINodeServer:
         self.host = host
         self.port = port
         self.task_handlers: dict[str, Callable[[dict], Any]] = {}
-        self.server: socket.socket | None = None
+        self.server: Optional[socket.socket] = None
         self.running = False
 
     def register_task(self, task_name: str, handler: Callable[[dict], Any]) -> None:
@@ -134,7 +134,7 @@ class AINodeServer:
 def ai_node_server(
     host: str = "localhost",
     port: int = 9999,
-    task_handlers: dict[str, Callable[[dict], Any]] | None = None
+    task_handlers: Optional[dict[str, Callable[[dict], Any]]] = None
 ) -> None:
     """
     Legacy function to start an AI Node Server (for backward compatibility).
