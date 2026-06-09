@@ -4,28 +4,27 @@ Wisdom Database for LYRA AI.
 
 import json
 import random
-from pathlib import Path
 from typing import List, Dict, Optional
 
 
 class WisdomDatabase:
     """
     A database of wisdom quotes, philosophies, and insights.
-    
+
     Attributes:
         quotes: List of wisdom entries (dicts with 'text', 'author', 'tags').
     """
-    
+
     def __init__(self, data_path: Optional[str] = None):
         """
         Initialize the Wisdom Database.
-        
+
         Args:
             data_path: Path to a JSON file containing wisdom data.
                       If None, uses default embedded data.
         """
         self.quotes: List[Dict[str, str]] = []
-        
+
         if data_path:
             self.load_from_file(data_path)
         else:
@@ -60,7 +59,10 @@ class WisdomDatabase:
                 "tags": ["resilience", "strength", "adversity"]
             },
             {
-                "text": "The greatest glory in living lies not in never falling, but in rising every time we fall.",
+                "text": (
+                    "The greatest glory in living lies not in never falling, "
+                    "but in rising every time we fall."
+                ),
                 "author": "Nelson Mandela",
                 "tags": ["resilience", "perseverance", "inspiration"]
             },
@@ -70,27 +72,43 @@ class WisdomDatabase:
                 "tags": ["action", "motivation", "productivity"]
             },
             {
-                "text": "Your time is limited, so don't waste it living someone else's life.",
+                "text": (
+                    "Your time is limited, so don't waste it living "
+                    "someone else's life."
+                ),
                 "author": "Steve Jobs",
                 "tags": ["purpose", "time", "authenticity"]
             },
             {
-                "text": "If you look at what you have in life, you'll always have more. If you look at what you don't have in life, you'll never have enough.",
+                "text": (
+                    "If you look at what you have in life, you'll always have more. "
+                    "If you look at what you don't have in life, you'll never have "
+                    "enough."
+                ),
                 "author": "Oprah Winfrey",
                 "tags": ["gratitude", "abundance", "mindset"]
             },
             {
-                "text": "The only limit to our realization of tomorrow is our doubts of today.",
+                "text": (
+                    "The only limit to our realization of tomorrow is our "
+                    "doubts of today."
+                ),
                 "author": "Franklin D. Roosevelt",
                 "tags": ["future", "doubt", "potential"]
             },
             {
-                "text": "Do not go where the path may lead, go instead where there is no path and leave a trail.",
+                "text": (
+                    "Do not go where the path may lead, go instead where there "
+                    "is no path and leave a trail."
+                ),
                 "author": "Ralph Waldo Emerson",
                 "tags": ["innovation", "leadership", "courage"]
             },
             {
-                "text": "The best and most beautiful things in the world cannot be seen or even touched - they must be felt with the heart.",
+                "text": (
+                    "The best and most beautiful things in the world cannot be "
+                    "seen or even touched - they must be felt with the heart."
+                ),
                 "author": "Helen Keller",
                 "tags": ["beauty", "heart", "perception"]
             },
@@ -100,7 +118,7 @@ class WisdomDatabase:
     def load_from_file(self, data_path: str) -> None:
         """
         Load wisdom data from a JSON file.
-        
+
         Args:
             data_path: Path to the JSON file.
         """
@@ -119,7 +137,7 @@ class WisdomDatabase:
     def save_to_file(self, data_path: str) -> None:
         """
         Save the wisdom database to a JSON file.
-        
+
         Args:
             data_path: Path to save the JSON file.
         """
@@ -129,7 +147,7 @@ class WisdomDatabase:
     def add_quote(self, text: str, author: str, tags: List[str]) -> None:
         """
         Add a new quote to the database.
-        
+
         Args:
             text: The quote text.
             author: The author of the quote.
@@ -144,17 +162,17 @@ class WisdomDatabase:
     def search(self, query: str, limit: int = 5) -> List[Dict[str, str]]:
         """
         Search the wisdom database for quotes matching a query.
-        
+
         Args:
             query: Search term (case-insensitive, matches text/author/tags).
             limit: Maximum number of results to return.
-            
+
         Returns:
             List of matching quotes (dicts).
         """
         query_lower = query.lower()
         results = []
-        
+
         for quote in self.quotes:
             # Check if query matches text, author, or any tag
             if (
@@ -163,16 +181,16 @@ class WisdomDatabase:
                 any(query_lower in tag.lower() for tag in quote.get("tags", []))
             ):
                 results.append(quote)
-        
+
         return results[:limit]
 
     def get_random(self, limit: int = 1) -> List[Dict[str, str]]:
         """
         Get random quotes from the database.
-        
+
         Args:
             limit: Number of random quotes to return.
-            
+
         Returns:
             List of random quotes (dicts).
         """
@@ -181,11 +199,11 @@ class WisdomDatabase:
     def get_by_tag(self, tag: str, limit: int = 5) -> List[Dict[str, str]]:
         """
         Get quotes by a specific tag.
-        
+
         Args:
             tag: Tag to filter by (case-insensitive).
             limit: Maximum number of results to return.
-            
+
         Returns:
             List of quotes with the specified tag.
         """
@@ -199,11 +217,11 @@ class WisdomDatabase:
     def get_by_author(self, author: str, limit: int = 5) -> List[Dict[str, str]]:
         """
         Get quotes by a specific author.
-        
+
         Args:
             author: Author name (case-insensitive).
             limit: Maximum number of results to return.
-            
+
         Returns:
             List of quotes by the specified author.
         """

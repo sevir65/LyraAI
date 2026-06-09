@@ -4,11 +4,10 @@ Run with: python -m lyra
 """
 
 import argparse
-import json
 import logging
 import sys
 import threading
-from typing import Callable, Any, Dict
+from typing import Any, Dict
 
 from .quantum import quantum_simulation
 from .models import simulate_collapse
@@ -41,11 +40,11 @@ def run_wisdom_search(args: argparse.Namespace) -> None:
     """Search the wisdom database and print results."""
     db = WisdomDatabase()
     results = db.search(args.query, limit=args.limit)
-    
+
     if not results:
         print(f"No wisdom found matching '{args.query}'")
         return
-    
+
     print(f"Wisdom search results for '{args.query}':")
     for i, quote in enumerate(results, 1):
         print(f"\n  {i}. {quote['text']}")
@@ -75,11 +74,11 @@ def run_server(args: argparse.Namespace) -> None:
     server.register_task("quantum", quantum_handler)
     server.register_task("collapse", collapse_handler)
     server.register_task("wisdom", wisdom_handler)
-    
+
     # Start server in a thread to allow KeyboardInterrupt
     server_thread = threading.Thread(target=server.start, daemon=True)
     server_thread.start()
-    
+
     try:
         server_thread.join()
     except KeyboardInterrupt:
@@ -90,7 +89,10 @@ def run_server(args: argparse.Namespace) -> None:
 def main() -> None:
     """Parse arguments and execute the appropriate command."""
     parser = argparse.ArgumentParser(
-        description="LYRA AI: Quantum-inspired AI framework for empathy, wisdom, and distributed computing.",
+        description=(
+            "LYRA AI: Quantum-inspired AI framework for empathy, wisdom, "
+            "and distributed computing."
+        ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -100,10 +102,10 @@ Examples:
   python -m lyra --server --port 9999
         """
     )
-    
+
     # Subparsers for different commands
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
-    
+
     # Quantum simulation command
     quantum_parser = subparsers.add_parser(
         "quantum",
@@ -115,7 +117,7 @@ Examples:
         default=0.0,
         help="Rotation angle in radians for the RX gate (default: 0.0)"
     )
-    
+
     # Collapse simulation command
     collapse_parser = subparsers.add_parser(
         "collapse",
@@ -127,7 +129,7 @@ Examples:
         default=1.0,
         help="Coupling constant for the collapse process (default: 1.0)"
     )
-    
+
     # Wisdom search command
     wisdom_parser = subparsers.add_parser(
         "wisdom",
@@ -145,7 +147,7 @@ Examples:
         default=5,
         help="Maximum number of results to return (default: 5)"
     )
-    
+
     # Server command
     server_parser = subparsers.add_parser(
         "server",
@@ -163,14 +165,14 @@ Examples:
         default=9999,
         help="Port to bind the server to (default: 9999)"
     )
-    
+
     # Parse arguments
     args = parser.parse_args()
-    
+
     if not args.command:
         parser.print_help()
         sys.exit(1)
-    
+
     # Execute the appropriate command
     if args.command == "quantum":
         run_quantum_simulation(args)

@@ -19,17 +19,17 @@ logger = logging.getLogger(__name__)
 class AINodeServer:
     """
     A socket server for distributed AI computation nodes.
-    
+
     Attributes:
         host: Host address to bind the server to.
         port: Port to bind the server to.
         task_handlers: Dictionary mapping task names to handler functions.
     """
-    
+
     def __init__(self, host: str = "localhost", port: int = 9999):
         """
         Initialize the AI Node Server.
-        
+
         Args:
             host: Host address (default: "localhost").
             port: Port number (default: 9999).
@@ -43,10 +43,11 @@ class AINodeServer:
     def register_task(self, task_name: str, handler: Callable[[dict], Any]) -> None:
         """
         Register a task handler for a specific task name.
-        
+
         Args:
             task_name: Name of the task (e.g., "quantum", "collapse").
-            handler: Function to handle the task. Takes a dict (request) and returns a result.
+            handler: Function to handle the task. Takes a dict (request)
+                and returns a result.
         """
         self.task_handlers[task_name] = handler
         logger.info(f"Registered task handler for '{task_name}'")
@@ -54,7 +55,7 @@ class AINodeServer:
     def _handle_client(self, client_socket: socket.socket) -> None:
         """
         Handle a client connection.
-        
+
         Args:
             client_socket: Socket object for the client connection.
         """
@@ -62,10 +63,10 @@ class AINodeServer:
             data = client_socket.recv(4096)
             if not data:
                 return
-            
+
             request = json.loads(data.decode("utf-8"))
             task = request.get("task")
-            
+
             if task not in self.task_handlers:
                 response = {"error": f"Unknown task: {task}"}
             else:
@@ -74,13 +75,17 @@ class AINodeServer:
                     response = {"result": result}
                 except Exception as e:
                     response = {"error": str(e)}
-            
+
             client_socket.send(json.dumps(response).encode("utf-8"))
         except json.JSONDecodeError:
-            client_socket.send(json.dumps({"error": "Invalid JSON"}).encode("utf-8"))
+            client_socket.send(
+                json.dumps({"error": "Invalid JSON"}).encode("utf-8")
+            )
         except Exception as e:
             logger.error(f"Error handling client: {e}")
-            client_socket.send(json.dumps({"error": "Internal server error"}).encode("utf-8"))
+            client_socket.send(
+                json.dumps({"error": "Internal server error"}).encode("utf-8")
+            )
         finally:
             client_socket.close()
 
@@ -91,12 +96,12 @@ class AINodeServer:
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.running = True
-        
+
         try:
             self.server.bind((self.host, self.port))
             self.server.listen(5)
             logger.info(f"AI Node Server running on {self.host}:{self.port}")
-            
+
             while self.running:
                 client_socket, addr = self.server.accept()
                 logger.info(f"Accepted connection from {addr}")
@@ -133,7 +138,7 @@ def ai_node_server(
 ) -> None:
     """
     Legacy function to start an AI Node Server (for backward compatibility).
-    
+
     Args:
         host: Host address (default: "localhost").
         port: Port number (default: 9999).

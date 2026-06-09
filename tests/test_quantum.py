@@ -1,6 +1,5 @@
 """Tests for quantum circuit simulations."""
 
-import pytest
 import numpy as np
 from lyra.quantum import quantum_simulation
 
@@ -38,4 +37,5 @@ class TestQuantumSimulation:
         """Test that quantum simulation results are in [-1, 1]."""
         for theta in np.linspace(-2 * np.pi, 2 * np.pi, 20):
             result = quantum_simulation(theta)
-            assert -1.0 <= result <= 1.0, f"Result {result} out of range for theta={theta}"
+            msg = f"Result {result} out of range for theta={theta}"
+            assert -1.0 <= result <= 1.0, msg

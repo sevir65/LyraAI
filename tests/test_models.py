@@ -1,6 +1,5 @@
 """Tests for scientific models (informational collapse)."""
 
-import pytest
 import numpy as np
 from lyra.models import informational_collapse, simulate_collapse
 from lyra.constants import ALPHA
@@ -11,11 +10,11 @@ class TestInformationalCollapse:
 
     def test_informational_collapse_basic(self):
         """Test basic informational collapse calculation."""
-        I = 1.0
+        informational = 1.0
         t = 0.0
         alpha_G = 1.0
-        result = informational_collapse(I, t, alpha_G)
-        expected = -alpha_G * (1 + ALPHA) * I
+        result = informational_collapse(informational, t, alpha_G)
+        expected = -alpha_G * (1 + ALPHA) * informational
         assert np.isclose(result, expected)
 
     def test_informational_collapse_zero_I(self):
@@ -31,7 +30,7 @@ class TestInformationalCollapse:
     def test_informational_collapse_negative_I(self):
         """Test collapse with negative informational gradient."""
         result = informational_collapse(-1.0, 0.0, 1.0)
-        expected = -1.0 * (1 + ALPHA) * (-1.0)  # = (1 + ALPHA)
+        expected = -1.0 * (1 + ALPHA) * (-1.0)  # NOQA: W503
         assert np.isclose(result, expected)
 
 
@@ -60,7 +59,7 @@ class TestSimulateCollapse:
         """Test simulate_collapse with custom alpha_G."""
         results_low = simulate_collapse(alpha_G=0.1)
         results_high = simulate_collapse(alpha_G=10.0)
-        
+
         # With higher alpha_G, decay should be faster
         # Compare values at t=5 (roughly middle of the simulation)
         assert results_low[50] > results_high[50]

@@ -7,29 +7,29 @@ import scipy.integrate as spi
 from .constants import ALPHA
 
 
-def informational_collapse(I: float, t: float, alpha_G: float) -> float:
+def informational_collapse(informational: float, t: float, alpha_G: float) -> float:
     """
     Model the collapse of informational gradients into gravity fields.
-    
+
     Args:
-        I: Informational gradient value.
+        informational: Informational gradient value.
         t: Time.
         alpha_G: Coupling constant for the collapse process.
-        
+
     Returns:
         Rate of change of the informational gradient (dI/dt).
     """
-    dI_dt = -alpha_G * (1 + ALPHA) * I
+    dI_dt = -alpha_G * (1 + ALPHA) * informational
     return dI_dt
 
 
 def simulate_collapse(alpha_G: float = 1.0) -> list[float]:
     """
     Simulate the informational collapse over time.
-    
+
     Args:
         alpha_G: Coupling constant for the collapse process (default: 1.0).
-        
+
     Returns:
         List of informational gradient values over time.
     """

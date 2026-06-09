@@ -1,6 +1,5 @@
 """Tests for Wisdom Database."""
 
-import pytest
 import tempfile
 import os
 from lyra.wisdom import WisdomDatabase
@@ -58,7 +57,8 @@ class TestWisdomDatabase:
         db = WisdomDatabase()
         results = db.get_by_tag("philosophy")
         assert len(results) > 0
-        assert all("philosophy" in [t.lower() for t in quote["tags"]] for quote in results)
+        for quote in results:
+            assert "philosophy" in [t.lower() for t in quote["tags"]]
 
     def test_get_by_author(self):
         """Test getting quotes by author."""
@@ -80,12 +80,12 @@ class TestWisdomDatabase:
             {"text": "Test quote 1", "author": "Author 1", "tags": ["test"]},
             {"text": "Test quote 2", "author": "Author 2", "tags": ["test"]},
         ]
-        
+
         with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
             import json
             json.dump(test_data, f)
             temp_path = f.name
-        
+
         try:
             db = WisdomDatabase(data_path=temp_path)
             assert len(db) == 2
@@ -97,13 +97,13 @@ class TestWisdomDatabase:
         """Test saving wisdom data to a file."""
         db = WisdomDatabase()
         db.add_quote("New quote", "New Author", ["new"])
-        
+
         with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
             temp_path = f.name
-        
+
         try:
             db.save_to_file(temp_path)
-            
+
             # Verify the file was saved correctly
             db2 = WisdomDatabase(data_path=temp_path)
             assert len(db2) == len(db)
