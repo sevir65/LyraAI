@@ -3,3 +3,4 @@ pennylane
 scipy
 pytest
 autoray==0.6.10
+importlib-metadata<7.0.0
