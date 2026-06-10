@@ -4,3 +4,4 @@ scipy
 pytest
 flask
 werkzeug
+flasgger

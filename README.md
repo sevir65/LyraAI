@@ -101,6 +101,41 @@ curl http://localhost:5000/api/wisdom?query=life
 curl http://localhost:5000/api/quantum?theta=0.5
 ```
 
+#### View API Documentation (Swagger UI)
+Once the Flask API is running, open your browser to:
+```
+http://localhost:5000/apidocs/
+```
+This provides interactive documentation for all endpoints.
+
+## Docker
+
+### Build the Docker Image
+```bash
+docker build -t lyra-ai .
+```
+
+### Run the Container
+```bash
+docker run -p 5000:5000 lyra-ai
+```
+
+### Run with Docker Compose (Optional)
+Create a `docker-compose.yml` file:
+```yaml
+version: '3.8'
+services:
+  lyra-ai:
+    build: .
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+```
+Then run:
+```bash
+docker-compose up -d
+```
+
 ## Project Structure
 
 ```
@@ -108,7 +143,7 @@ LyraAI/
 ├── lyra/
 │   ├── __init__.py
 │   ├── __main__.py       # CLI entrypoint
-│   ├── api.py            # Flask REST API
+│   ├── api.py            # Flask REST API with Swagger docs
 │   ├── quantum.py        # Quantum circuit simulations
 │   ├── models.py         # Scientific models (e.g., informational collapse)
 │   ├── network.py        # Distributed AI networking
@@ -120,6 +155,8 @@ LyraAI/
 │   ├── test_models.py
 │   ├── test_network.py
 │   └── test_api.py       # Flask API tests
+├── Dockerfile            # Docker container configuration
+├── .dockerignore         # Docker ignore rules
 ├── requirements.txt
 ├── README.md
 ├── LICENSE
@@ -134,6 +171,8 @@ LyraAI/
 - **Scientific Computing**: NumPy, SciPy
 - **Networking**: Python `socket` and `threading`
 - **Web Framework**: Flask (REST API)
+- **API Documentation**: Flasgger (Swagger/OpenAPI)
+- **Containerization**: Docker
 
 ## Contributing
 
