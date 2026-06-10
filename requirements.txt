@@ -1,3 +1,7 @@
 numpy
 pennylane
 scipy
+pytest
+flask
+werkzeug
+flasgger
